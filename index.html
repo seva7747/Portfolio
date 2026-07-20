@@ -205,6 +205,63 @@
     padding-top: 1rem;
   }
 
+  /* --- résumé (Me tab) + magnifier lens --- */
+  .resume-wrap { position: relative; }
+  .resume {
+    cursor: none;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    padding: 1.35rem 1.5rem;
+  }
+  .r-head {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    gap: 1rem; flex-wrap: wrap;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.85rem; margin-bottom: 1rem;
+  }
+  .r-name {
+    font-family: var(--serif); font-weight: 600; font-size: 1.55rem;
+    letter-spacing: -0.01em; margin: 0;
+  }
+  .r-role {
+    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--muted); margin: 0.35rem 0 0;
+  }
+  .r-contact {
+    list-style: none; margin: 0; padding: 0; text-align: right;
+    font-family: var(--mono); font-size: 0.7rem; color: var(--faint); line-height: 1.75;
+  }
+  .r-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem 1.6rem; }
+  .r-block h3 {
+    font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.14em;
+    text-transform: uppercase; color: var(--accent); margin: 0 0 0.45rem;
+  }
+  .r-block p { margin: 0; font-size: 0.9rem; line-height: 1.5; color: var(--ink); }
+  .r-block ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.32rem; }
+  .r-block ul li { font-size: 0.88rem; color: var(--ink); }
+  .r-chips { flex-direction: row; flex-wrap: wrap; gap: 0.35rem; }
+  .r-chips li {
+    font-family: var(--mono); font-size: 0.72rem;
+    border: 1px solid var(--line); border-radius: 3px; padding: 0.2rem 0.5rem;
+  }
+
+  .lens {
+    position: absolute; top: 0; left: 0;
+    width: 168px; height: 168px; border-radius: 50%;
+    overflow: hidden; pointer-events: none;
+    opacity: 0; transition: opacity .12s ease;
+    border: 2px solid var(--accent);
+    box-shadow: 0 8px 26px rgba(0, 0, 0, 0.30);
+    background: var(--paper);
+    z-index: 5;
+  }
+  .lens-content { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
+  @media (max-width: 640px) {
+    .resume { cursor: auto; }
+    .lens { display: none; }   /* no hover on touch — show the plain résumé */
+  }
+
   :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
 
   /* --- small screens: allow the page to breathe & scroll --- */
@@ -248,10 +305,49 @@
 
     <!-- ME -->
     <section class="panel" id="me" role="tabpanel" aria-labelledby="tab-me" tabindex="0" hidden>
-      <p class="eyebrow">About</p>
-      <h2>15-year-old developer who ships.</h2>
-      <p class="lead">I design and build apps and websites that solve a real problem — and I have the <em>wins</em> to show for it.</p>
-      <p class="dim">I've placed first in a hackathon I wasn't even old enough to walk into, shipped an app to the App Store and Google Play, and built a live site for a working law practice. Currently a student at West Valley Community College and an intern at Kylon.io, an AI startup.</p>
+      <p class="eyebrow">Résumé — move your mouse over it to magnify 🔍</p>
+      <div class="resume-wrap">
+        <div class="resume" id="resume">
+          <div class="r-head">
+            <div>
+              <h2 class="r-name">Sebastian Tsivyan</h2>
+              <p class="r-role">Developer · Apps, Websites &amp; MVPs</p>
+            </div>
+            <ul class="r-contact">
+              <li>San Jose, California</li>
+              <li>stsivyan@gmail.com</li>
+              <li>linkedin.com/in/sebastian-tsivyan</li>
+            </ul>
+          </div>
+          <div class="r-grid">
+            <section class="r-block">
+              <h3>Profile</h3>
+              <p>15-year-old developer who ships real products — not just demos. Fast, self-taught, and AI-native.</p>
+            </section>
+            <section class="r-block">
+              <h3>Highlights</h3>
+              <ul>
+                <li>🥇 1st place — Bay Builders Hackathon</li>
+                <li>📱 Lumify AI — live on App Store &amp; Google Play</li>
+                <li>⚖️ Shipped a live law-practice website</li>
+                <li>🤖 Intern at Kylon.io, an AI startup</li>
+              </ul>
+            </section>
+            <section class="r-block">
+              <h3>Skills</h3>
+              <ul class="r-chips">
+                <li>C++</li><li>Python</li><li>JavaScript</li>
+                <li>Java</li><li>HTML</li><li>CSS</li>
+              </ul>
+            </section>
+            <section class="r-block">
+              <h3>Education</h3>
+              <p>West Valley Community College.<br>Coding classes since age 8, sharpened at hackathons.</p>
+            </section>
+          </div>
+        </div>
+        <div class="lens" id="lens" aria-hidden="true"></div>
+      </div>
     </section>
 
     <!-- ACHIEVEMENTS -->
@@ -334,6 +430,29 @@
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(tab); }
     });
   });
+
+  // Résumé magnifier: the cursor becomes a zoom lens over the résumé.
+  (function () {
+    const resume = document.getElementById('resume');
+    const lens = document.getElementById('lens');
+    if (!resume || !lens) return;
+    const Z = 2, SIZE = 168;
+    const clone = resume.cloneNode(true);
+    clone.removeAttribute('id');
+    clone.classList.add('lens-content');
+    lens.appendChild(clone);
+    resume.addEventListener('mousemove', e => {
+      const r = resume.getBoundingClientRect();
+      const mx = e.clientX - r.left, my = e.clientY - r.top;
+      clone.style.width = r.width + 'px';
+      lens.style.left = (mx - SIZE / 2) + 'px';
+      lens.style.top = (my - SIZE / 2) + 'px';
+      clone.style.transform =
+        `translate(${SIZE / 2 - mx * Z}px, ${SIZE / 2 - my * Z}px) scale(${Z})`;
+      lens.style.opacity = '1';
+    });
+    resume.addEventListener('mouseleave', () => { lens.style.opacity = '0'; });
+  })();
 </script>
 
 </body>
