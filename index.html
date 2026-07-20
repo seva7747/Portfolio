@@ -206,49 +206,51 @@
   }
 
   /* --- résumé (Me tab) + magnifier lens --- */
-  .resume-wrap { position: relative; }
+  #me { display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
+  #me .eyebrow { margin-bottom: 0.8rem; text-align: center; }
+  .resume-wrap { position: relative; width: 100%; max-width: 480px; }
   .resume {
     cursor: none;
     background: var(--paper);
     border: 1px solid var(--line);
     border-radius: 6px;
-    padding: 1.35rem 1.5rem;
+    padding: 0.95rem 1.1rem;
   }
   .r-head {
     display: flex; justify-content: space-between; align-items: flex-start;
-    gap: 1rem; flex-wrap: wrap;
+    gap: 0.7rem; flex-wrap: wrap;
     border-bottom: 1px solid var(--line);
-    padding-bottom: 0.85rem; margin-bottom: 1rem;
+    padding-bottom: 0.55rem; margin-bottom: 0.7rem;
   }
   .r-name {
-    font-family: var(--serif); font-weight: 600; font-size: 1.55rem;
+    font-family: var(--serif); font-weight: 600; font-size: 1.2rem;
     letter-spacing: -0.01em; margin: 0;
   }
   .r-role {
-    font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.08em;
-    text-transform: uppercase; color: var(--muted); margin: 0.35rem 0 0;
+    font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--muted); margin: 0.25rem 0 0;
   }
   .r-contact {
     list-style: none; margin: 0; padding: 0; text-align: right;
-    font-family: var(--mono); font-size: 0.7rem; color: var(--faint); line-height: 1.75;
+    font-family: var(--mono); font-size: 0.58rem; color: var(--faint); line-height: 1.65;
   }
-  .r-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem 1.6rem; }
+  .r-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem 1.25rem; }
   .r-block h3 {
-    font-family: var(--mono); font-size: 0.63rem; letter-spacing: 0.14em;
-    text-transform: uppercase; color: var(--accent); margin: 0 0 0.45rem;
+    font-family: var(--mono); font-size: 0.56rem; letter-spacing: 0.13em;
+    text-transform: uppercase; color: var(--accent); margin: 0 0 0.3rem;
   }
-  .r-block p { margin: 0; font-size: 0.9rem; line-height: 1.5; color: var(--ink); }
-  .r-block ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.32rem; }
-  .r-block ul li { font-size: 0.88rem; color: var(--ink); }
-  .r-chips { flex-direction: row; flex-wrap: wrap; gap: 0.35rem; }
+  .r-block p { margin: 0; font-size: 0.79rem; line-height: 1.4; color: var(--ink); }
+  .r-block ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.22rem; }
+  .r-block ul li { font-size: 0.77rem; line-height: 1.3; color: var(--ink); }
+  .r-chips { flex-direction: row; flex-wrap: wrap; gap: 0.28rem; }
   .r-chips li {
-    font-family: var(--mono); font-size: 0.72rem;
-    border: 1px solid var(--line); border-radius: 3px; padding: 0.2rem 0.5rem;
+    font-family: var(--mono); font-size: 0.66rem;
+    border: 1px solid var(--line); border-radius: 3px; padding: 0.14rem 0.44rem;
   }
 
   .lens {
     position: absolute; top: 0; left: 0;
-    width: 168px; height: 168px; border-radius: 50%;
+    width: 150px; height: 150px; border-radius: 50%;
     overflow: hidden; pointer-events: none;
     opacity: 0; transition: opacity .12s ease;
     border: 2px solid var(--accent);
@@ -305,7 +307,7 @@
 
     <!-- ME -->
     <section class="panel" id="me" role="tabpanel" aria-labelledby="tab-me" tabindex="0" hidden>
-      <p class="eyebrow">Résumé — move your mouse over it to magnify 🔍</p>
+      <p class="eyebrow">Résumé — move your mouse over it to magnify</p>
       <div class="resume-wrap">
         <div class="resume" id="resume">
           <div class="r-head">
@@ -327,10 +329,10 @@
             <section class="r-block">
               <h3>Highlights</h3>
               <ul>
-                <li>🥇 1st place — Bay Builders Hackathon</li>
-                <li>📱 Lumify AI — live on App Store &amp; Google Play</li>
-                <li>⚖️ Shipped a live law-practice website</li>
-                <li>🤖 Intern at Kylon.io, an AI startup</li>
+                <li>1st place — Bay Builders Hackathon</li>
+                <li>Lumify AI — live on App Store &amp; Google Play</li>
+                <li>Shipped a live law-practice website</li>
+                <li>Intern at Kylon.io, an AI startup</li>
               </ul>
             </section>
             <section class="r-block">
@@ -436,7 +438,7 @@
     const resume = document.getElementById('resume');
     const lens = document.getElementById('lens');
     if (!resume || !lens) return;
-    const Z = 2, SIZE = 168;
+    const Z = 2, SIZE = 150;
     const clone = resume.cloneNode(true);
     clone.removeAttribute('id');
     clone.classList.add('lens-content');
