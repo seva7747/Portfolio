@@ -206,51 +206,56 @@
   }
 
   /* --- résumé (Me tab) + magnifier lens --- */
-  #me { display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; }
-  #me .eyebrow { margin-bottom: 0.8rem; text-align: center; }
-  .resume-wrap { position: relative; width: 100%; max-width: 480px; }
+  #me { display: block; overflow-y: auto; }
+  #me .eyebrow { text-align: center; margin-bottom: 0.7rem; }
+  .resume-wrap { position: relative; width: 100%; max-width: 560px; margin: 0 auto; }
   .resume {
     cursor: none;
     background: var(--paper);
     border: 1px solid var(--line);
     border-radius: 6px;
-    padding: 0.95rem 1.1rem;
-  }
-  .r-head {
-    display: flex; justify-content: space-between; align-items: flex-start;
-    gap: 0.7rem; flex-wrap: wrap;
-    border-bottom: 1px solid var(--line);
-    padding-bottom: 0.55rem; margin-bottom: 0.7rem;
+    padding: 1.6rem 1.9rem;
   }
   .r-name {
-    font-family: var(--serif); font-weight: 600; font-size: 1.2rem;
-    letter-spacing: -0.01em; margin: 0;
+    text-align: center; font-family: var(--serif); font-weight: 600;
+    font-size: 1.7rem; letter-spacing: 0.16em; text-transform: uppercase; margin: 0;
   }
   .r-role {
-    font-family: var(--mono); font-size: 0.58rem; letter-spacing: 0.08em;
-    text-transform: uppercase; color: var(--muted); margin: 0.25rem 0 0;
+    text-align: center; font-family: var(--mono); font-size: 0.68rem;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--muted); margin: 0.5rem 0 0;
   }
-  .r-contact {
-    list-style: none; margin: 0; padding: 0; text-align: right;
-    font-family: var(--mono); font-size: 0.58rem; color: var(--faint); line-height: 1.65;
+  .r-contact-line {
+    text-align: center; font-family: var(--mono); font-size: 0.62rem;
+    color: var(--faint); letter-spacing: 0.02em; margin: 0.7rem 0 0;
   }
-  .r-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem 1.25rem; }
-  .r-block h3 {
-    font-family: var(--mono); font-size: 0.56rem; letter-spacing: 0.13em;
-    text-transform: uppercase; color: var(--accent); margin: 0 0 0.3rem;
+  .r-rule { height: 1px; background: var(--line); margin: 1rem 0; }
+  .r-summary { font-size: 0.82rem; line-height: 1.5; color: var(--ink); margin: 0; }
+
+  .r-section { margin-top: 1.15rem; }
+  .r-section > h3 {
+    font-family: var(--sans); font-weight: 700; font-size: 0.72rem;
+    letter-spacing: 0.16em; text-transform: uppercase; color: var(--ink);
+    margin: 0 0 0.6rem; border-bottom: 1px solid var(--line); padding-bottom: 0.3rem;
   }
-  .r-block p { margin: 0; font-size: 0.79rem; line-height: 1.4; color: var(--ink); }
-  .r-block ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 0.22rem; }
-  .r-block ul li { font-size: 0.77rem; line-height: 1.3; color: var(--ink); }
-  .r-chips { flex-direction: row; flex-wrap: wrap; gap: 0.28rem; }
-  .r-chips li {
-    font-family: var(--mono); font-size: 0.66rem;
-    border: 1px solid var(--line); border-radius: 3px; padding: 0.14rem 0.44rem;
+  .r-job { margin-bottom: 0.75rem; }
+  .r-job:last-child { margin-bottom: 0; }
+  .r-job h4 {
+    font-family: var(--sans); font-weight: 700; font-size: 0.8rem;
+    letter-spacing: 0.03em; text-transform: uppercase; margin: 0;
   }
+  .r-date {
+    font-family: var(--serif); font-style: italic; font-size: 0.74rem;
+    color: var(--muted); margin: 0.12rem 0 0.35rem;
+  }
+  .r-job ul, .r-list {
+    margin: 0; padding-left: 1.1rem; display: flex; flex-direction: column; gap: 0.22rem;
+  }
+  .r-job ul li, .r-list li { font-size: 0.78rem; line-height: 1.4; color: var(--ink); }
+  .r-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 0 1.6rem; }
 
   .lens {
     position: absolute; top: 0; left: 0;
-    width: 150px; height: 150px; border-radius: 50%;
+    width: 155px; height: 155px; border-radius: 50%;
     overflow: hidden; pointer-events: none;
     opacity: 0; transition: opacity .12s ease;
     border: 2px solid var(--accent);
@@ -260,7 +265,8 @@
   }
   .lens-content { position: absolute; top: 0; left: 0; transform-origin: 0 0; }
   @media (max-width: 640px) {
-    .resume { cursor: auto; }
+    .resume { cursor: auto; padding: 1.25rem 1.15rem; }
+    .r-cols { grid-template-columns: 1fr; }
     .lens { display: none; }   /* no hover on touch — show the plain résumé */
   }
 
@@ -310,42 +316,66 @@
       <p class="eyebrow">Résumé — move your mouse over it to magnify</p>
       <div class="resume-wrap">
         <div class="resume" id="resume">
-          <div class="r-head">
-            <div>
-              <h2 class="r-name">Sebastian Tsivyan</h2>
-              <p class="r-role">Developer · Apps, Websites &amp; MVPs</p>
-            </div>
-            <ul class="r-contact">
-              <li>San Jose, California</li>
-              <li>stsivyan@gmail.com</li>
-              <li>linkedin.com/in/sebastian-tsivyan</li>
-            </ul>
-          </div>
-          <div class="r-grid">
-            <section class="r-block">
-              <h3>Profile</h3>
-              <p>15-year-old developer who ships real products — not just demos. Fast, self-taught, and AI-native.</p>
-            </section>
-            <section class="r-block">
-              <h3>Highlights</h3>
+          <h2 class="r-name">Sebastian Tsivyan</h2>
+          <p class="r-role">Developer · AI-Native Software Engineer</p>
+          <p class="r-contact-line">stsivyan@gmail.com&nbsp;&nbsp;|&nbsp;&nbsp;linkedin.com/in/sebastian-tsivyan&nbsp;&nbsp;|&nbsp;&nbsp;sebastiantsivyan.dev</p>
+          <div class="r-rule"></div>
+          <p class="r-summary">15-year-old software developer building apps and websites — from hackathon-winning prototypes to products live on the App Store and Google Play. Currently interning at an AI startup and taking college coursework at West Valley Community College. Self-taught since age 8.</p>
+
+          <div class="r-section">
+            <h3>Work Experience</h3>
+            <div class="r-job">
+              <h4>Software Engineering Intern — Kylon.io</h4>
+              <p class="r-date">2026 – Present</p>
               <ul>
-                <li>1st place — Bay Builders Hackathon</li>
-                <li>Lumify AI — live on App Store &amp; Google Play</li>
-                <li>Shipped a live law-practice website</li>
-                <li>Intern at Kylon.io, an AI startup</li>
+                <li>Build and ship features using autonomous AI agents.</li>
+                <li>Develop and test agent workflows for real products.</li>
               </ul>
-            </section>
-            <section class="r-block">
-              <h3>Skills</h3>
-              <ul class="r-chips">
-                <li>C++</li><li>Python</li><li>JavaScript</li>
-                <li>Java</li><li>HTML</li><li>CSS</li>
+            </div>
+            <div class="r-job">
+              <h4>Freelance Developer</h4>
+              <p class="r-date">2025 – Present</p>
+              <ul>
+                <li>Designed, built, and deployed a live website for a law practice (tsivyanesq.com).</li>
+                <li>Deliver custom websites and apps for clients end-to-end.</li>
               </ul>
-            </section>
-            <section class="r-block">
-              <h3>Education</h3>
-              <p>West Valley Community College.<br>Coding classes since age 8, sharpened at hackathons.</p>
-            </section>
+            </div>
+            <div class="r-job">
+              <h4>Projects &amp; Products</h4>
+              <ul>
+                <li>Scout — business lead-finder; 1st place, Bay Builders Hackathon.</li>
+                <li>Lumify AI — photo-enhancing app, live on App Store &amp; Google Play.</li>
+                <li>Hackrate — multi-model AI reviewer for hackathon projects.</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="r-cols">
+            <div>
+              <div class="r-section">
+                <h3>Education</h3>
+                <p class="r-summary" style="margin:0"><strong>West Valley Community College</strong><br>Computer Science coursework · Self-taught since age 8</p>
+              </div>
+              <div class="r-section">
+                <h3>Awards</h3>
+                <ul class="r-list">
+                  <li>1st place — Bay Builders Hackathon</li>
+                  <li>Shipped Lumify AI to App Store &amp; Google Play</li>
+                </ul>
+              </div>
+            </div>
+            <div>
+              <div class="r-section">
+                <h3>Skills</h3>
+                <ul class="r-list">
+                  <li>C++, Python, JavaScript, Java</li>
+                  <li>HTML, CSS</li>
+                  <li>App development &amp; release</li>
+                  <li>AI agents &amp; prompt engineering</li>
+                  <li>Git &amp; deployment (Cloudflare, Fly.io)</li>
+                </ul>
+              </div>
+            </div>
           </div>
         </div>
         <div class="lens" id="lens" aria-hidden="true"></div>
@@ -438,7 +468,7 @@
     const resume = document.getElementById('resume');
     const lens = document.getElementById('lens');
     if (!resume || !lens) return;
-    const Z = 2, SIZE = 150;
+    const Z = 2, SIZE = 155;
     const clone = resume.cloneNode(true);
     clone.removeAttribute('id');
     clone.classList.add('lens-content');
