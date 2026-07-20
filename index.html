@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sebastian Tsivyan — Developer</title>
+<meta name="description" content="Sebastian Tsivyan — a 15-year-old developer building apps and websites that ship. San Jose, California.">
+<style>
+  :root {
+    --paper:   #FCFCFB;
+    --ink:     #191B1F;
+    --muted:   #62666E;
+    --faint:   #8B909A;
+    --line:    #E6E6E2;
+    --line-2:  #EFEFEC;
+    --accent:  #2340D6;
+    --accent-soft: rgba(35, 64, 214, 0.07);
+    --signal:  #9A6410;
+    --signal-soft: rgba(154, 100, 16, 0.10);
+
+    --serif: "Iowan Old Style", "Palatino Linotype", Palatino, "Book Antiqua", Georgia, "Times New Roman", serif;
+    --sans:  system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --mono:  ui-monospace, "Cascadia Code", "SF Mono", Consolas, Menlo, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --paper:#101216; --ink:#ECEDEF; --muted:#A0A6AF; --faint:#6B717B;
+      --line:#262A31; --line-2:#1E2228; --accent:#8299FF; --accent-soft:rgba(130,153,255,0.12);
+      --signal:#E0A85B; --signal-soft:rgba(224,168,91,0.14);
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    overflow: hidden;                 /* the page itself never scrolls */
+  }
+
+  .app {
+    height: 100dvh;
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: clamp(1.75rem, 4vw, 3rem) clamp(1.5rem, 5vw, 3.5rem);
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "brand  nav"
+      "stage  nav"
+      "foot   nav";
+    column-gap: clamp(2rem, 6vw, 5rem);
+    row-gap: 1.25rem;
+  }
+
+  /* --- brand --- */
+  .brand { grid-area: brand; }
+  .brand .name {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(1.35rem, 3vw, 1.7rem);
+    letter-spacing: -0.01em;
+    margin: 0;
+  }
+  .brand .loc {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin: 0.35rem 0 0;
+  }
+
+  /* --- nav (right) --- */
+  nav {
+    grid-area: nav;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 0.15rem;
+    border-left: 1px solid var(--line);
+    padding-left: clamp(1.25rem, 3vw, 2.25rem);
+    min-width: 8.5rem;
+  }
+  nav button {
+    appearance: none;
+    background: none;
+    border: 0;
+    cursor: pointer;
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    letter-spacing: 0.03em;
+    color: var(--muted);
+    text-align: left;
+    padding: 0.6rem 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.7rem;
+    transition: color .16s ease;
+  }
+  nav button .idx {
+    font-size: 0.62rem;
+    color: var(--faint);
+    letter-spacing: 0.1em;
+  }
+  nav button:hover { color: var(--ink); }
+  nav button[aria-selected="true"] { color: var(--accent); }
+  nav button[aria-selected="true"] .idx { color: var(--accent); }
+
+  /* --- stage / panels --- */
+  .stage { grid-area: stage; position: relative; min-height: 0; }
+  .panel {
+    position: absolute;
+    inset: 0;
+    overflow-y: auto;
+    padding-right: 0.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: opacity .3s ease, transform .3s ease, visibility .3s;
+  }
+  .panel.active { opacity: 1; visibility: visible; transform: none; }
+
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--faint);
+    margin: 0 0 1rem;
+  }
+  .panel h2 {
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: clamp(1.9rem, 4.5vw, 2.7rem);
+    line-height: 1.05;
+    letter-spacing: -0.015em;
+    margin: 0 0 1rem;
+    text-wrap: balance;
+  }
+  .panel p { margin: 0 0 0.9rem; max-width: 52ch; color: var(--ink); }
+  .panel p.dim { color: var(--muted); }
+  .panel a { color: var(--accent); text-decoration: none; border-bottom: 1px solid transparent; transition: border-color .16s ease; }
+  .panel a:hover, .panel a:focus-visible { border-color: var(--accent); }
+  .lead {
+    font-family: var(--serif);
+    font-size: clamp(1.15rem, 2.6vw, 1.4rem);
+    line-height: 1.4;
+    margin-bottom: 1.1rem !important;
+  }
+  .lead em { color: var(--accent); font-style: italic; }
+
+  /* achievements list */
+  .achv { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1rem; }
+  .achv li { display: grid; grid-template-columns: 1fr; gap: 0.15rem; }
+  .achv .row { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; }
+  .achv h3 { font-family: var(--serif); font-weight: 600; font-size: 1.2rem; margin: 0; }
+  .achv h3 a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); transition: color .16s ease, border-color .16s ease; }
+  .achv h3 a:hover, .achv h3 a:focus-visible { color: var(--accent); border-color: var(--accent); }
+  .achv h3 a::after { content: " \2197"; font-family: var(--mono); font-size: 0.7rem; color: var(--accent); vertical-align: super; }
+  .achv .badge {
+    font-family: var(--mono); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--signal); background: var(--signal-soft); padding: 0.15rem 0.45rem; border-radius: 2px; font-weight: 600;
+  }
+  .achv .badge.plain { color: var(--muted); background: var(--line-2); }
+  .achv .desc { color: var(--muted); font-size: 0.94rem; margin: 0; max-width: 54ch; }
+  .achv .desc a { font-family: var(--mono); font-size: 0.8rem; white-space: nowrap; }
+
+  /* skills */
+  .langs { display: flex; flex-wrap: wrap; gap: 0.55rem; margin: 0 0 1.5rem; padding: 0; list-style: none; }
+  .langs li {
+    font-family: var(--mono); font-size: 0.82rem;
+    border: 1px solid var(--line); border-radius: 2px;
+    padding: 0.45rem 0.8rem; color: var(--ink);
+  }
+  .learn { display: flex; flex-direction: column; gap: 0.6rem; margin: 0; padding: 0; list-style: none; max-width: 48ch; }
+  .learn li { display: flex; gap: 0.7rem; color: var(--muted); font-size: 0.96rem; }
+  .learn li b { color: var(--ink); font-weight: 600; font-family: var(--serif); }
+
+  /* contact */
+  .contacts { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.2rem; }
+  .btn {
+    font-family: var(--mono); font-size: 0.8rem; text-decoration: none;
+    color: var(--ink); border: 1px solid var(--line); border-radius: 2px;
+    padding: 0.6rem 1rem; transition: border-color .16s ease, color .16s ease, background .16s ease;
+  }
+  .btn:hover, .btn:focus-visible { border-color: var(--accent); color: var(--accent); }
+  .btn.primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
+  .btn.primary:hover, .btn.primary:focus-visible { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  /* --- footer --- */
+  footer {
+    grid-area: foot;
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    letter-spacing: 0.06em;
+    color: var(--faint);
+    border-top: 1px solid var(--line-2);
+    padding-top: 1rem;
+  }
+
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+  /* --- small screens: allow the page to breathe & scroll --- */
+  @media (max-width: 640px) {
+    body { overflow: auto; }
+    .app {
+      height: auto;
+      min-height: 100dvh;
+      grid-template-columns: 1fr;
+      grid-template-areas: "brand" "nav" "stage" "foot";
+      row-gap: 1.5rem;
+    }
+    nav { border-left: 0; border-top: 1px solid var(--line); padding-left: 0; padding-top: 0.75rem;
+          flex-direction: row; flex-wrap: wrap; gap: 0.25rem 1.25rem; justify-content: flex-start; }
+    .stage { position: static; min-height: 60vh; }
+    .panel { position: absolute; }
+    .panel.active { position: relative; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .panel { transition: opacity .01s; transform: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <div class="brand">
+    <h1 class="name">Sebastian Tsivyan</h1>
+    <p class="loc">Developer · San Jose, California</p>
+  </div>
+
+  <nav role="tablist" aria-label="Sections">
+    <button role="tab" aria-selected="true"  aria-controls="me"    id="tab-me"><span class="idx">01</span> Me</button>
+    <button role="tab" aria-selected="false" aria-controls="work"  id="tab-work"><span class="idx">02</span> Achievements</button>
+    <button role="tab" aria-selected="false" aria-controls="skills" id="tab-skills"><span class="idx">03</span> Skills</button>
+    <button role="tab" aria-selected="false" aria-controls="hire"  id="tab-hire"><span class="idx">04</span> Hire me</button>
+  </nav>
+
+  <div class="stage">
+
+    <!-- ME -->
+    <section class="panel active" id="me" role="tabpanel" aria-labelledby="tab-me" tabindex="0">
+      <p class="eyebrow">About</p>
+      <h2>15-year-old developer who ships.</h2>
+      <p class="lead">I design and build apps and websites that solve a real problem — and I have the <em>wins</em> to show for it.</p>
+      <p class="dim">I've placed first in a hackathon I wasn't even old enough to walk into, shipped an app to the App Store and Google Play, and built a live site for a working law practice. Currently a student at West Valley Community College and an intern at Kylon.io, an AI startup.</p>
+    </section>
+
+    <!-- ACHIEVEMENTS -->
+    <section class="panel" id="work" role="tabpanel" aria-labelledby="tab-work" tabindex="0" hidden>
+      <p class="eyebrow">Selected work</p>
+      <ul class="achv">
+        <li>
+          <div class="row"><h3><a href="https://youtu.be/mub2xlBcSxg" target="_blank" rel="noopener">Scout</a></h3><span class="badge">1st Place · Bay Builders</span></div>
+          <p class="desc">Finds the right business leads from a plain-English request. We won first place on the demo alone — I was under 18 and couldn't enter the venue.</p>
+        </li>
+        <li>
+          <div class="row"><h3>Lumify AI</h3><span class="badge plain">App Store &amp; Google Play</span></div>
+          <p class="desc">A photo-enhancing app, shipped and live on both mobile stores.</p>
+        </li>
+        <li>
+          <div class="row"><h3><a href="https://hackrate-uhs1.onrender.com/" target="_blank" rel="noopener">Hackrate</a></h3><span class="badge plain">Live</span></div>
+          <p class="desc">Rates your hackathon idea with four AI models + a Kylon.io agent, and tests your site.</p>
+        </li>
+        <li>
+          <div class="row"><h3><a href="https://www.tsivyanesq.com/" target="_blank" rel="noopener">Tsivyan Esq.</a></h3><span class="badge plain">Client · Live</span></div>
+          <p class="desc">Designed and built the website for a practicing attorney.</p>
+        </li>
+        <li>
+          <div class="row"><h3>Benefy</h3><span class="badge plain">Hackathon</span></div>
+          <p class="desc">Helps lower-income Americans claim the benefits they already qualify for.</p>
+        </li>
+      </ul>
+    </section>
+
+    <!-- SKILLS -->
+    <section class="panel" id="skills" role="tabpanel" aria-labelledby="tab-skills" tabindex="0" hidden>
+      <p class="eyebrow">Programming</p>
+      <h2>Languages I build with.</h2>
+      <ul class="langs">
+        <li>C++</li><li>CSS</li><li>HTML</li><li>Java</li><li>JavaScript</li><li>Python</li>
+      </ul>
+      <ul class="learn">
+        <li><span>—</span><span>Coding <b>classes since age 8.</b></span></li>
+        <li><span>—</span><span>Sharpened at <b>hackathons.</b></span></li>
+        <li><span>—</span><span>College coursework at <b>West Valley Community College.</b></span></li>
+      </ul>
+    </section>
+
+    <!-- HIRE -->
+    <section class="panel" id="hire" role="tabpanel" aria-labelledby="tab-hire" tabindex="0" hidden>
+      <p class="eyebrow">Work with me</p>
+      <h2>Have something you want built?</h2>
+      <p class="dim">Tell me what you're trying to make — an app, a website, a tool — and I'll tell you how I'd build it and how fast.</p>
+      <div class="contacts">
+        <a class="btn primary" href="mailto:stsivyan@gmail.com">stsivyan@gmail.com</a>
+        <a class="btn" href="https://www.linkedin.com/in/sebastian-tsivyan-1297103b7" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </section>
+
+  </div>
+
+  <footer>San Jose, CA · Available for freelance app &amp; website work</footer>
+
+</div>
+
+<script>
+  const tabs = document.querySelectorAll('[role="tab"]');
+  const panels = document.querySelectorAll('.panel');
+
+  function select(tab) {
+    tabs.forEach(t => t.setAttribute('aria-selected', String(t === tab)));
+    const id = tab.getAttribute('aria-controls');
+    panels.forEach(p => {
+      const on = p.id === id;
+      p.classList.toggle('active', on);
+      p.hidden = !on;
+    });
+  }
+
+  tabs.forEach((tab, i) => {
+    tab.addEventListener('click', () => select(tab));
+    tab.addEventListener('keydown', e => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowRight') { e.preventDefault(); tabs[(i + 1) % tabs.length].focus(); }
+      if (e.key === 'ArrowUp'   || e.key === 'ArrowLeft')  { e.preventDefault(); tabs[(i - 1 + tabs.length) % tabs.length].focus(); }
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(tab); }
+    });
+  });
+</script>
+
+</body>
+</html>
