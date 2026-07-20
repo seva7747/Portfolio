@@ -238,8 +238,8 @@
   </div>
 
   <nav role="tablist" aria-label="Sections">
-    <button role="tab" aria-selected="true"  aria-controls="me"    id="tab-me"><span class="idx">01</span> Me</button>
-    <button role="tab" aria-selected="false" aria-controls="work"  id="tab-work"><span class="idx">02</span> Achievements</button>
+    <button role="tab" aria-selected="false" aria-controls="me"    id="tab-me"><span class="idx">01</span> Me</button>
+    <button role="tab" aria-selected="true"  aria-controls="work"  id="tab-work"><span class="idx">02</span> Achievements</button>
     <button role="tab" aria-selected="false" aria-controls="skills" id="tab-skills"><span class="idx">03</span> Skills</button>
     <button role="tab" aria-selected="false" aria-controls="hire"  id="tab-hire"><span class="idx">04</span> Hire me</button>
   </nav>
@@ -247,7 +247,7 @@
   <div class="stage">
 
     <!-- ME -->
-    <section class="panel active" id="me" role="tabpanel" aria-labelledby="tab-me" tabindex="0">
+    <section class="panel" id="me" role="tabpanel" aria-labelledby="tab-me" tabindex="0" hidden>
       <p class="eyebrow">About</p>
       <h2>15-year-old developer who ships.</h2>
       <p class="lead">I design and build apps and websites that solve a real problem — and I have the <em>wins</em> to show for it.</p>
@@ -255,7 +255,7 @@
     </section>
 
     <!-- ACHIEVEMENTS -->
-    <section class="panel" id="work" role="tabpanel" aria-labelledby="tab-work" tabindex="0" hidden>
+    <section class="panel active" id="work" role="tabpanel" aria-labelledby="tab-work" tabindex="0">
       <p class="eyebrow">Selected work</p>
       <ul class="achv">
         <li>
