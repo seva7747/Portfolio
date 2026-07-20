@@ -106,16 +106,6 @@
   .btn.primary { background: var(--ink); color: var(--paper); border-color: var(--ink); }
   .btn.primary:hover, .btn.primary:focus-visible { background: var(--accent); border-color: var(--accent); color: #fff; }
 
-  /* photo strip — replace the tiles with <img> when you have photos */
-  .photos { display: grid; grid-template-columns: repeat(5, 1fr); gap: 0.6rem; margin-top: 2.4rem; }
-  .photos .tile {
-    aspect-ratio: 3 / 4; border-radius: 5px; border: 1px solid var(--line);
-    background:
-      linear-gradient(150deg, var(--accent-soft), transparent 70%),
-      var(--surface);
-  }
-  @media (max-width: 620px) { .photos { grid-template-columns: repeat(3, 1fr); } .photos .tile:nth-child(n+4) { display: none; } }
-
   /* --- section heading --- */
   .sec-title {
     font-family: var(--serif); font-weight: 600; font-size: clamp(1.5rem, 4vw, 2rem);
@@ -234,11 +224,6 @@
         <a class="btn primary" href="mailto:stsivyan@gmail.com">Email me</a>
         <a class="btn" href="https://www.linkedin.com/in/sebastian-tsivyan-1297103b7" target="_blank" rel="noopener">LinkedIn</a>
         <a class="btn" href="#projects">See my work</a>
-      </div>
-      <!-- PHOTO STRIP: swap each .tile for <img src="photos/1.jpg" alt=""> when you have photos -->
-      <div class="photos" aria-hidden="true">
-        <div class="tile"></div><div class="tile"></div><div class="tile"></div>
-        <div class="tile"></div><div class="tile"></div>
       </div>
     </div>
   </section>
